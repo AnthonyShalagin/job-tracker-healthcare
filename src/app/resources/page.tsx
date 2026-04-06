@@ -109,6 +109,51 @@ const newsletters = [
   },
 ];
 
+const events = [
+  {
+    name: "HLNY FACHE Info Session",
+    date: "Apr 16, 2026",
+    location: "NYC metro",
+    url: "https://hlny.org/hlny-events/",
+    description: "Learn about FACHE credential pathway. Hosted by Healthcare Leaders of New York (ACHE chapter).",
+  },
+  {
+    name: "HLNY Networking Event",
+    date: "Apr 21, 2026",
+    location: "NYC metro",
+    url: "https://hlny.org/hlny-events/",
+    description: "Network with NYC healthcare leaders. ACHE membership recommended.",
+  },
+  {
+    name: "HealthcareX Jersey City Job Fair",
+    date: "Apr 28, 2026",
+    location: "Jersey City, NJ",
+    url: "https://www.healthcarex.co/job-fairs-near-me/new-jersey/jersey-city",
+    description: "Free healthcare career fair. Local employers attend. Also runs monthly through October.",
+  },
+  {
+    name: "NY MGMA Annual Conference",
+    date: "Jun 7-8, 2026",
+    location: "Verona, NY",
+    url: "https://www.newyorkmgma.com/2026AnnualConference",
+    description: "Medical group management. Operations-specific networking with practice leaders.",
+  },
+  {
+    name: "NJHA Best at the Beach",
+    date: "Jul 11, 2026",
+    location: "Long Branch, NJ",
+    url: "https://education.njha.com/events",
+    description: "NJ hospital executives networking event. The summer's premier NJ healthcare gathering.",
+  },
+  {
+    name: "Northwell Health Recruitment Sessions",
+    date: "Recurring",
+    location: "Virtual",
+    url: "https://jobs.northwell.edu/events-main/",
+    description: "Get to Know Northwell sessions. Largest private employer in NY. Check for ops/management roles.",
+  },
+];
+
 const communities = [
   {
     name: "Healthcare Pulse (Slack)",
@@ -279,6 +324,39 @@ export default function ResourcesPage() {
               </a>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Events */}
+      <section className="mb-10">
+        <h2 className="text-[16px] font-semibold text-stone-800 mb-4">
+          Upcoming Events
+        </h2>
+        <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-stone-100">
+                <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Event</th>
+                <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Date</th>
+                <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Location</th>
+                <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((e, i) => (
+                <tr key={e.name} className={i < events.length - 1 ? "border-b border-stone-50" : ""}>
+                  <td className="px-4 py-3.5">
+                    <a href={e.url} target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:underline">
+                      {e.name}
+                    </a>
+                  </td>
+                  <td className="px-4 py-3.5 text-[13px] text-stone-700 font-medium whitespace-nowrap">{e.date}</td>
+                  <td className="px-4 py-3.5 text-[13px] text-stone-500 whitespace-nowrap">{e.location}</td>
+                  <td className="px-4 py-3.5 text-[13px] text-stone-500">{e.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
