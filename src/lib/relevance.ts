@@ -93,7 +93,7 @@ const LOCATION_SCORES: [RegExp, number][] = [
   [/hackensack|teaneck|paramus|fort lee|clifton|montclair|west orange|glen ridge/i, 12],
   [/newark|bayonne/i, 12],
   [/yonkers|white plains/i, 8],
-  [/rahway|springfield/i, 8],
+  [/rahway|springfield|east orange|orange/i, 8],
   [/staten island/i, 10],
   // Too far
   [/stamford|danbury|hartford|connecticut/i, -20],
