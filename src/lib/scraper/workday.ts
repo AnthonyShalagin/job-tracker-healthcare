@@ -24,18 +24,25 @@ export async function scrapeWorkday(
   try {
     const url = `https://${instance}.myworkdayjobs.com/wday/cxs/${tenant}/${slug}/jobs`;
 
+    // Workday CXS API is sensitive to headers. Use minimal headers
+    // and explicitly set User-Agent to avoid Vercel's default being rejected.
+    const body = JSON.stringify({
+      limit: 100,
+      offset: 0,
+      appliedFacets: {},
+      searchText: "",
+    });
+
     const res = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
       },
-      body: JSON.stringify({
-        limit: 100,
-        offset: 0,
-        appliedFacets: {},
-        searchText: "",
-      }),
+      body,
       signal: AbortSignal.timeout(15000),
+      // @ts-expect-error - Next.js extends fetch with cache options
+      cache: "no-store",
     });
 
     if (!res.ok) {
