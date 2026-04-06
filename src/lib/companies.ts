@@ -1052,6 +1052,70 @@ export const COMPANIES: CompanyConfig[] = [
     category: "nonprofit",
   },
   {
+    name: "Bergen New Bridge Medical Center",
+    website: "https://www.newbridgehealth.org",
+    careersUrl: "https://www.newbridgehealth.org/careers/",
+    atsType: "html",
+    category: "snf",
+    // Largest hospital AND SNF in NJ, 1070 beds, Paramus NJ
+  },
+  {
+    name: "Rutgers UBHC",
+    website: "https://ubhc.rutgers.edu",
+    careersUrl: "https://jobs.rutgers.edu/",
+    atsType: "html",
+    category: "nonprofit",
+    // $260M budget, 15 NJ sites, largest behavioral health provider
+  },
+  {
+    name: "RiverSpring Living",
+    website: "https://www.riverspringliving.org",
+    careersUrl: "https://careers-riverspringliving.icims.com/jobs/intro",
+    atsType: "html",
+    category: "snf",
+    // Hebrew Home at Riverdale, 1000+ beds, Bronx
+  },
+  {
+    name: "Community Healthcare Network",
+    website: "https://www.chnnyc.org",
+    careersUrl: "https://www.chnnyc.org/for-professionals/careers/",
+    atsType: "html",
+    category: "nonprofit",
+    // 700 employees, 14 FQHCs across NYC
+  },
+  {
+    name: "Ryan Health",
+    website: "https://ryanhealth.org",
+    careersUrl: "https://ryanhealth.org/careers",
+    atsType: "html",
+    category: "nonprofit",
+    // 500+ employees, 19-site FQHC in Manhattan
+  },
+  {
+    name: "Metropolitan Family Health Network",
+    website: "https://www.metropolitanfhn.com",
+    careersUrl: "https://www.metropolitanfhn.com/career-opportunities/",
+    atsType: "html",
+    category: "nonprofit",
+    // FQHC in Jersey City — located at 857 Bergen Ave JC
+  },
+  {
+    name: "Helen Keller Services",
+    website: "https://www.helenkeller.org",
+    careersUrl: "https://www.helenkeller.org/careers/",
+    atsType: "html",
+    category: "idd",
+    // Rehab for blind/visually impaired, Brooklyn HQ
+  },
+  {
+    name: "Henry Street Settlement",
+    website: "https://www.henrystreet.org",
+    careersUrl: "https://www.henrystreet.org/about/employment/",
+    atsType: "html",
+    category: "nonprofit",
+    // 850 employees, comprehensive social services, mental health clinic, LES Manhattan
+  },
+  {
     name: "Good Shepherd Services",
     website: "https://goodshepherds.org",
     careersUrl: "https://goodshepherds.org/careers",
