@@ -442,9 +442,10 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Grow Therapy",
     website: "https://growtherapy.com",
     careersUrl: "https://growtherapy.com/careers/",
-    atsType: "html",
+    atsType: "greenhouse",
+    atsBoardToken: "growtherapy",
     category: "telehealth",
-    // Practice management + insurance platform for therapists; NYC office, remote
+    // YC/Series B, Director of Rev Ops posted, NYC/Remote
   },
   {
     name: "Thriveworks",
@@ -1106,6 +1107,70 @@ export const COMPANIES: CompanyConfig[] = [
     atsType: "html",
     category: "idd",
     // Rehab for blind/visually impaired, Brooklyn HQ
+  },
+  {
+    name: "SportsMed Physical Therapy",
+    website: "https://www.sportsmedpt.com",
+    careersUrl: "https://www.sportsmedpt.com/careers",
+    atsType: "html",
+    category: "rehabilitation",
+    // PE-backed, 54 NJ clinics, 2026 PT Company of Year, actively acquiring
+  },
+  {
+    name: "Professional Physical Therapy",
+    website: "https://www.professionalpt.com",
+    careersUrl: "https://www.professionalpt.com/careers/",
+    atsType: "html",
+    category: "rehabilitation",
+    // PE-backed (THL Partners), 100+ NJ/NY/CT locations, 8 acquisitions
+  },
+  {
+    name: "Clipboard Health",
+    website: "https://www.clipboardhealth.com",
+    careersUrl: "https://www.clipboardhealth.com/careers",
+    atsType: "html",
+    category: "healthtech",
+    // YC-backed, $1B+ valuation, Operations Director posted, remote
+  },
+  {
+    name: "Beacon Behavioral Partners",
+    website: "https://beaconbehavioralpartners.com",
+    careersUrl: "https://beaconbehavioralpartners.com/careers",
+    atsType: "html",
+    category: "telehealth",
+    // PE-backed, 18 acquisitions, NJ presence via Synapse, hiring senior ops
+  },
+  {
+    name: "US Pediatric Partners",
+    website: "https://uspediatricpartners.com",
+    careersUrl: "https://uspediatricpartners.com/careers",
+    atsType: "html",
+    category: "healthops",
+    // PE-backed, NJ-rooted, 55+ locations, active roll-up
+  },
+  {
+    name: "CareBridge / Elevance Health",
+    website: "https://www.carebridgehealth.com",
+    careersUrl: "https://www.carebridgehealth.com/careers",
+    atsType: "html",
+    category: "homehealth",
+    // Transformation Director Clinical Ops role posted, Iselin NJ office
+  },
+  {
+    name: "ConcertoCare",
+    website: "https://concertocare.com",
+    careersUrl: "https://concertocare.com/careers",
+    atsType: "html",
+    category: "homehealth",
+    // Value-based home care, NY-based, 37 open positions, expanding
+  },
+  {
+    name: "AtlantiCare",
+    website: "https://www.atlanticare.org",
+    careersUrl: "https://www.atlanticare.org/careers",
+    atsType: "html",
+    category: "healthsystem",
+    // $75M expansion completed, additional enhancements through 2026
   },
   {
     name: "Henry Street Settlement",
