@@ -879,6 +879,29 @@ export const COMPANIES: CompanyConfig[] = [
     category: "rehabilitation",
   },
   {
+    name: "FOX Rehabilitation",
+    website: "https://www.foxrehab.org",
+    careersUrl: "https://careers.foxrehab.org/us/en",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+  {
+    name: "Portopiccolo Group",
+    website: "https://theportopiccologroup.com",
+    careersUrl: "https://theportopiccologroup.com",
+    atsType: "html",
+    category: "snf",
+    // 136 nursing homes, HQ Englewood Cliffs NJ, active acquirer
+  },
+  {
+    name: "Marquis Health Services",
+    website: "https://mqshealth.com",
+    careersUrl: "https://mqshealth.com/careers",
+    atsType: "html",
+    category: "snf",
+    // NJ-based, manages 4500+ SNF/AL beds, recently acquired 2 Virtua facilities
+  },
+  {
     name: "Quality Rehab Management",
     website: "https://qrmhealth.com",
     careersUrl: "https://qrmhealth.com/qrm-careers",
