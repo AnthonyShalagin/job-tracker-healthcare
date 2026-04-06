@@ -11,6 +11,7 @@ interface Role {
   location: string | null;
   salary: string | null;
   status: string;
+  userStatus: string | null;
   firstSeen: string;
   postedDate: string | null;
   company: {
@@ -61,22 +62,51 @@ export default function Dashboard() {
     }
   }
 
+  async function handleUserStatusChange(roleId: string, userStatus: string | null) {
+    // Optimistic update
+    setRoles((prev) =>
+      prev.map((r) => (r.id === roleId ? { ...r, userStatus } : r))
+    );
+
+    await fetch(`/api/roles/${roleId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userStatus }),
+    });
+  }
+
   const activeCount = roles.filter((r) => r.status === "active").length;
   const companyCount = new Set(roles.map((r) => r.company.name)).size;
+
+  // Count new roles (first seen in last 24 hours)
+  const newToday = roles.filter((r) => {
+    const seen = new Date(r.firstSeen);
+    return Date.now() - seen.getTime() < 24 * 60 * 60 * 1000;
+  }).length;
+
+  const appliedCount = roles.filter((r) => r.userStatus === "applied").length;
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-[22px] font-semibold text-stone-900 tracking-tight">
-          Open Roles
-        </h1>
-        <p className="text-[13px] text-stone-500 mt-0.5">
+        <div className="flex items-center gap-3 mb-1">
+          <h1 className="text-[22px] font-semibold text-stone-900 tracking-tight">
+            Open Roles
+          </h1>
+          {newToday > 0 && (
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[12px] font-semibold bg-blue-100 text-blue-700">
+              {newToday} new today
+            </span>
+          )}
+        </div>
+        <p className="text-[13px] text-stone-500">
           {loading ? (
             "Loading..."
           ) : (
             <>
-              {activeCount} active role{activeCount !== 1 ? "s" : ""} across {companyCount} compan{companyCount !== 1 ? "ies" : "y"} — remote and NYC/JC area
+              {activeCount} active across {companyCount} companies
+              {appliedCount > 0 && <> &middot; {appliedCount} applied</>}
             </>
           )}
         </p>
@@ -101,6 +131,7 @@ export default function Dashboard() {
           sortField={sortField}
           sortOrder={sortOrder}
           onSort={handleSort}
+          onUserStatusChange={handleUserStatusChange}
         />
       )}
     </div>

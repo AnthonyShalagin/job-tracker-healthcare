@@ -39,6 +39,8 @@ model Role {
   description  String?
   postedDate   DateTime?
   status       String    @default("active") // active | stale | closed | unverified
+  userStatus   String?   // applied | interested | dismissed | null (unseen)
+  appliedAt    DateTime?
   firstSeen    DateTime  @default(now())
   lastVerified DateTime  @default(now())
   createdAt    DateTime  @default(now())

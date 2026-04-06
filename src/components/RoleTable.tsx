@@ -1,7 +1,7 @@
 "use client";
 
+import { useState } from "react";
 import { StatusBadge } from "./StatusBadge";
-import { formatRelativeDate } from "@/lib/utils";
 
 interface Role {
   id: string;
@@ -10,6 +10,7 @@ interface Role {
   location: string | null;
   salary: string | null;
   status: string;
+  userStatus: string | null;
   firstSeen: string;
   postedDate: string | null;
   company: {
@@ -23,6 +24,7 @@ interface RoleTableProps {
   sortField: string;
   sortOrder: string;
   onSort: (field: string) => void;
+  onUserStatusChange?: (roleId: string, userStatus: string | null) => void;
 }
 
 function SortIndicator({ active, order }: { active: boolean; order: string }) {
@@ -35,22 +37,77 @@ function SortIndicator({ active, order }: { active: boolean; order: string }) {
 }
 
 function formatPostedDate(postedDate: string | null, firstSeen: string): string {
-  if (postedDate) {
-    const d = new Date(postedDate);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "Yesterday";
-    if (diffDays < 7) return `${diffDays}d ago`;
-    if (diffDays < 14) return "1 week ago";
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  }
-  return formatRelativeDate(firstSeen);
+  const d = new Date(postedDate || firstSeen);
+  const now = new Date();
+  const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 14) return "1 week ago";
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export function RoleTable({ roles, sortField, sortOrder, onSort }: RoleTableProps) {
+const userStatusConfig: Record<string, { label: string; classes: string }> = {
+  applied: { label: "Applied", classes: "bg-blue-50 text-blue-600 ring-blue-500/20" },
+  interested: { label: "Interested", classes: "bg-violet-50 text-violet-600 ring-violet-500/20" },
+  dismissed: { label: "Dismissed", classes: "bg-stone-50 text-stone-400 ring-stone-300/40" },
+};
+
+function ActionButtons({ role, onStatusChange }: { role: Role; onStatusChange: (status: string | null) => void }) {
+  const [open, setOpen] = useState(false);
+
+  if (role.userStatus) {
+    const config = userStatusConfig[role.userStatus];
+    return (
+      <button
+        onClick={() => { setOpen(!open); }}
+        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium ring-1 ring-inset cursor-pointer ${config.classes}`}
+      >
+        {config.label}
+        {open && (
+          <span className="ml-1 text-[10px] opacity-60" onClick={(e) => { e.stopPropagation(); onStatusChange(null); }}>
+            clear
+          </span>
+        )}
+      </button>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1">
+      <button
+        onClick={() => onStatusChange("applied")}
+        title="Mark as Applied"
+        className="p-1 rounded hover:bg-blue-50 text-stone-300 hover:text-blue-500 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => onStatusChange("interested")}
+        title="Mark as Interested"
+        className="p-1 rounded hover:bg-violet-50 text-stone-300 hover:text-violet-500 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => onStatusChange("dismissed")}
+        title="Not Relevant"
+        className="p-1 rounded hover:bg-stone-100 text-stone-300 hover:text-stone-500 transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusChange }: RoleTableProps) {
   if (roles.length === 0) {
     return (
       <div className="bg-white rounded-xl border border-stone-200 p-16 text-center">
@@ -65,6 +122,15 @@ export function RoleTable({ roles, sortField, sortOrder, onSort }: RoleTableProp
     );
   }
 
+  const handleStatusChange = (roleId: string, userStatus: string | null) => {
+    if (onUserStatusChange) onUserStatusChange(roleId, userStatus);
+  };
+
+  // Split roles: dismissed at the bottom
+  const activeRoles = roles.filter(r => r.userStatus !== "dismissed");
+  const dismissedRoles = roles.filter(r => r.userStatus === "dismissed");
+  const sortedRoles = [...activeRoles, ...dismissedRoles];
+
   return (
     <>
       {/* Desktop table */}
@@ -72,65 +138,41 @@ export function RoleTable({ roles, sortField, sortOrder, onSort }: RoleTableProp
         <table className="w-full">
           <thead>
             <tr className="border-b border-stone-100">
-              <th
-                className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors"
-                onClick={() => onSort("company")}
-              >
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors" onClick={() => onSort("company")}>
                 Company <SortIndicator active={sortField === "company"} order={sortOrder} />
               </th>
-              <th
-                className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors"
-                onClick={() => onSort("title")}
-              >
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors" onClick={() => onSort("title")}>
                 Role <SortIndicator active={sortField === "title"} order={sortOrder} />
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
-                Location
-              </th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
-                Salary
-              </th>
-              <th
-                className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors"
-                onClick={() => onSort("postedDate")}
-              >
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Location</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Salary</th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600 transition-colors" onClick={() => onSort("postedDate")}>
                 Posted <SortIndicator active={sortField === "postedDate"} order={sortOrder} />
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
-                Status
-              </th>
+              <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider">Status</th>
+              <th className="px-4 py-3 text-center text-[11px] font-semibold text-stone-400 uppercase tracking-wider w-[100px]">Track</th>
             </tr>
           </thead>
           <tbody>
-            {roles.map((role, i) => (
+            {sortedRoles.map((role, i) => (
               <tr
                 key={role.id}
-                className={`hover:bg-blue-50/40 transition-colors ${i < roles.length - 1 ? "border-b border-stone-50" : ""}`}
+                className={`transition-colors ${role.userStatus === "dismissed" ? "opacity-40" : "hover:bg-blue-50/40"} ${i < sortedRoles.length - 1 ? "border-b border-stone-50" : ""}`}
               >
                 <td className="px-4 py-3.5">
                   <span className="text-[13px] font-medium text-stone-700">{role.company.name}</span>
                 </td>
                 <td className="px-4 py-3.5">
-                  <a
-                    href={role.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:underline"
-                  >
+                  <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:underline">
                     {role.title}
                   </a>
                 </td>
-                <td className="px-4 py-3.5">
-                  <span className="text-[13px] text-stone-500">{role.location || "Remote"}</span>
-                </td>
-                <td className="px-4 py-3.5">
-                  <span className="text-[13px] text-stone-500">{role.salary || "—"}</span>
-                </td>
-                <td className="px-4 py-3.5">
-                  <span className="text-[13px] text-stone-400">{formatPostedDate(role.postedDate, role.firstSeen)}</span>
-                </td>
-                <td className="px-4 py-3.5">
-                  <StatusBadge status={role.status} />
+                <td className="px-4 py-3.5"><span className="text-[13px] text-stone-500">{role.location || "Remote"}</span></td>
+                <td className="px-4 py-3.5"><span className="text-[13px] text-stone-500">{role.salary || "—"}</span></td>
+                <td className="px-4 py-3.5"><span className="text-[13px] text-stone-400">{formatPostedDate(role.postedDate, role.firstSeen)}</span></td>
+                <td className="px-4 py-3.5"><StatusBadge status={role.status} /></td>
+                <td className="px-4 py-3.5 text-center">
+                  <ActionButtons role={role} onStatusChange={(s) => handleStatusChange(role.id, s)} />
                 </td>
               </tr>
             ))}
@@ -140,37 +182,22 @@ export function RoleTable({ roles, sortField, sortOrder, onSort }: RoleTableProp
 
       {/* Mobile cards */}
       <div className="md:hidden space-y-2.5">
-        {roles.map((role) => (
-          <div key={role.id} className="bg-white rounded-xl border border-stone-200 p-4 shadow-sm">
+        {sortedRoles.map((role) => (
+          <div key={role.id} className={`bg-white rounded-xl border border-stone-200 p-4 shadow-sm ${role.userStatus === "dismissed" ? "opacity-40" : ""}`}>
             <div className="flex items-start justify-between gap-3 mb-1.5">
               <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">{role.company.name}</span>
-              <StatusBadge status={role.status} />
+              <div className="flex items-center gap-2">
+                <StatusBadge status={role.status} />
+                <ActionButtons role={role} onStatusChange={(s) => handleStatusChange(role.id, s)} />
+              </div>
             </div>
-            <a
-              href={role.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[14px] font-medium text-blue-600 hover:text-blue-700 leading-snug block mb-2"
-            >
+            <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[14px] font-medium text-blue-600 hover:text-blue-700 leading-snug block mb-2">
               {role.title}
             </a>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-stone-400">
-              <span className="flex items-center gap-1">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-                {role.location || "Remote"}
-              </span>
-              <span className="flex items-center gap-1">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-                {formatPostedDate(role.postedDate, role.firstSeen)}
-              </span>
-              {role.salary && (
-                <span className="text-stone-500 font-medium">{role.salary}</span>
-              )}
+              <span>{role.location || "Remote"}</span>
+              <span>{formatPostedDate(role.postedDate, role.firstSeen)}</span>
+              {role.salary && <span className="text-stone-500 font-medium">{role.salary}</span>}
             </div>
           </div>
         ))}
