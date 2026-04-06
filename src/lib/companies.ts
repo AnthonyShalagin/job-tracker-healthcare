@@ -231,7 +231,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Select Medical / Kessler",
     website: "https://www.selectmedical.com",
     careersUrl: "https://careers.selectmedical.com/",
-    atsType: "html",
+    atsType: "icims",
+    icimsPortal: "jobs-selectmedicalcorp.icims.com",
     category: "rehabilitation",
   },
   {
@@ -268,7 +269,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "CareOne",
     website: "https://www.care-one.com",
     careersUrl: "https://www.care-one.com/careers/open-positions/",
-    atsType: "html",
+    atsType: "icims",
+    icimsPortal: "careers-care-one.icims.com",
     category: "snf",
   },
   {
@@ -343,7 +345,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Hackensack Meridian Health",
     website: "https://www.hackensackmeridianhealth.org",
     careersUrl: "https://jobs.hackensackmeridianhealth.org/",
-    atsType: "html",
+    atsType: "icims",
+    icimsPortal: "careers-hackensackmeridianhealth.icims.com",
     category: "healthsystem",
   },
   {
@@ -1072,7 +1075,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "RiverSpring Living",
     website: "https://www.riverspringliving.org",
     careersUrl: "https://careers-riverspringliving.icims.com/jobs/intro",
-    atsType: "html",
+    atsType: "icims",
+    icimsPortal: "careers-riverspringliving.icims.com",
     category: "snf",
     // Hebrew Home at Riverdale, 1000+ beds, Bronx
   },

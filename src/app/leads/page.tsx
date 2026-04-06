@@ -47,7 +47,7 @@ const hiringSignals = [
     company: "Professional Physical Therapy",
     signal: "PE-backed (THL Partners), 100+ NJ/NY/CT locations. 8 acquisitions completed. Largest independent PT footprint in the Northeast.",
     contact: "Executive team via LinkedIn",
-    action: "Multi-site integration is exactly the ops challenge Emma has solved before",
+    action: "Multi-site integration is exactly the ops challenge this profile has solved before",
     urgency: "medium" as const,
   },
   {

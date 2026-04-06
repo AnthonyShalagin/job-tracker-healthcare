@@ -6,6 +6,7 @@ import { scrapeAshby } from "./ashby";
 import { scrapeLever } from "./lever";
 import { scrapeWorkday } from "./workday";
 import { scrapeSmartRecruiters } from "./smartrecruiters";
+import { scrapeICIMS } from "./icims";
 import { scrapeHTML } from "./html";
 import { verifyRoles } from "./verify";
 import { sendDigestEmail } from "@/lib/email";
@@ -69,6 +70,17 @@ async function scrapeCompany(config: CompanyConfig): Promise<ScraperResult> {
         };
       }
       return scrapeSmartRecruiters(config.name, config.atsBoardToken);
+
+    case "icims":
+      if (!config.icimsPortal) {
+        return {
+          companyName: config.name,
+          roles: [],
+          error: "No iCIMS portal configured",
+          durationMs: 0,
+        };
+      }
+      return scrapeICIMS(config.name, config.icimsPortal);
 
     case "html":
       return scrapeHTML(config);

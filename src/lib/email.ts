@@ -81,7 +81,7 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
 
   await resend.emails.send({
     from: "Job Tracker <onboarding@resend.dev>",
-    to: ["anthony.shalagin@gmail.com", "emma.raykhman@gmail.com"],
+    to: (process.env.NOTIFICATION_EMAILS || "").split(",").map((e) => e.trim()).filter(Boolean),
     subject: `${roles.length} new role${roles.length === 1 ? "" : "s"} found — Healthcare Job Tracker`,
     html,
   });

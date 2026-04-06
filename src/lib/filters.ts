@@ -1,4 +1,4 @@
-// Keywords that signal the role is in Emma's target domain
+// Keywords that signal the role is in the target candidate's domain
 const DOMAIN_KEYWORDS = [
   "operations",
   "clinical",
@@ -73,7 +73,7 @@ const STANDALONE_RELEVANT = [
   "site director",
 ];
 
-// Departments/functions that are NOT relevant to Emma
+// Departments/functions that are NOT relevant
 const IRRELEVANT_DEPARTMENTS = [
   "sales",
   "marketing",
@@ -226,7 +226,7 @@ const REMOTE_KEYWORDS = [
   "telehealth",
 ];
 
-// Specific cities/areas Emma would commute to
+// Specific cities/areas within commute range
 const ALLOWED_LOCATIONS = [
   "jersey city",
   "hoboken",

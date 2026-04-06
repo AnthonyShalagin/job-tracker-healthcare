@@ -13,7 +13,7 @@ export default function GuidePage() {
           </p>
         </div>
         <a
-          href="/emma-guide.pdf"
+          href="/guide.pdf"
           download
           className="shrink-0 px-4 py-2 bg-stone-800 text-white text-[13px] font-medium rounded-lg hover:bg-stone-700 transition-colors flex items-center gap-2"
         >
