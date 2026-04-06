@@ -24,7 +24,7 @@ interface ScoredRole {
 
 // Positive signals — each adds points
 const STRONG_FIT_TITLES: [RegExp, number][] = [
-  [/director.*(rehabilitation|rehab)/i, 30],
+  [/director.*(rehabilitation|rehab)|rehabilitation director|rehab director/i, 30],
   [/director.*operations/i, 25],
   [/director.*clinical (operations|services)/i, 30],
   [/director.*patient services/i, 25],
@@ -93,9 +93,13 @@ const LOCATION_SCORES: [RegExp, number][] = [
   [/hackensack|teaneck|paramus|fort lee|clifton|montclair|west orange|glen ridge/i, 12],
   [/newark|bayonne/i, 12],
   [/yonkers|white plains/i, 8],
+  [/rahway|springfield/i, 8],
+  [/staten island/i, 10],
   // Too far
+  [/stamford|danbury|hartford|connecticut/i, -20],
   [/cherry hill|lakewood|neptune|brick|trenton|edison|new brunswick/i, -20],
   [/philadelphia|boston|chicago|dallas|atlanta|los angeles|san francisco/i, -30],
+  [/long island|hempstead|huntington|suffolk/i, -15],
 ];
 
 export function scoreRole(
