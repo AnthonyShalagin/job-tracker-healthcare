@@ -203,36 +203,59 @@ export function isRelevantRole(title: string): boolean {
   return hasLeadership && hasDomain;
 }
 
-const LOCATION_INCLUDE = [
+// Remote indicators
+const REMOTE_KEYWORDS = [
   "remote",
   "work from home",
   "virtual",
   "telehealth",
-  "nj",
-  "new jersey",
+];
+
+// Specific cities/areas Emma would commute to
+const ALLOWED_LOCATIONS = [
   "jersey city",
   "hoboken",
-  "newark",
-  "bayonne",
-  "ny",
   "new york",
   "manhattan",
   "brooklyn",
   "queens",
   "bronx",
   "staten island",
+];
+
+// Broad terms that mean "anywhere in the US" — only valid when they're the
+// entire location, not appended to a specific out-of-area city
+const US_WIDE = [
   "united states",
   "nationwide",
+  "us",
+  "usa",
 ];
 
 export function isRelevantLocation(location: string | null | undefined): boolean {
-  // No location = assumed remote
+  // No location listed = assumed remote
   if (!location || location.trim() === "") return true;
 
-  const lower = location.toLowerCase();
+  const lower = location.toLowerCase().trim();
 
-  // Check for US-wide / remote
-  if (lower === "us" || lower === "usa") return true;
+  // 1. Remote roles — always include
+  if (REMOTE_KEYWORDS.some((kw) => lower.includes(kw))) return true;
 
-  return LOCATION_INCLUDE.some((kw) => lower.includes(kw));
+  // 2. Check if location is ONLY a US-wide term (e.g. "United States", "US")
+  //    Strip common suffixes and check if nothing specific remains
+  const stripped = lower
+    .replace(/,?\s*united states/g, "")
+    .replace(/,?\s*usa?$/g, "")
+    .replace(/,?\s*nationwide/g, "")
+    .trim();
+
+  // If after stripping US-wide terms nothing is left, it's a national/remote role
+  if (stripped === "" || stripped === "us" || stripped === "usa") return true;
+
+  // 3. Check if the specific city/area is in our allowed list
+  if (ALLOWED_LOCATIONS.some((kw) => stripped.includes(kw))) return true;
+
+  // 4. Everything else (e.g., "Burlington, Massachusetts", "Torrance, California",
+  //    "New Albany, Ohio") is out of commute range
+  return false;
 }
