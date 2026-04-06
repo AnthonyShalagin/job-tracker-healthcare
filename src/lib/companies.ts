@@ -269,8 +269,7 @@ export const COMPANIES: CompanyConfig[] = [
     name: "CareOne",
     website: "https://www.care-one.com",
     careersUrl: "https://www.care-one.com/careers/open-positions/",
-    atsType: "icims",
-    icimsPortal: "careers-care-one.icims.com",
+    atsType: "html",
     category: "snf",
   },
   {
@@ -1075,8 +1074,7 @@ export const COMPANIES: CompanyConfig[] = [
     name: "RiverSpring Living",
     website: "https://www.riverspringliving.org",
     careersUrl: "https://careers-riverspringliving.icims.com/jobs/intro",
-    atsType: "icims",
-    icimsPortal: "careers-riverspringliving.icims.com",
+    atsType: "html",
     category: "snf",
     // Hebrew Home at Riverdale, 1000+ beds, Bronx
   },
