@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { COMPANIES } from "@/lib/companies";
 import { isRelevantRole, isRelevantLocation } from "@/lib/filters";
+import { scoreRole } from "@/lib/relevance";
 import { scrapeGreenhouse } from "./greenhouse";
 import { scrapeAshby } from "./ashby";
 import { scrapeLever } from "./lever";
@@ -177,10 +178,15 @@ export async function runScrapeOrchestrator(
       errors.push({ company: result.companyName, error: result.error });
     }
 
-    // Filter to relevant roles
-    const filtered = result.roles.filter(
-      (r) => isRelevantRole(r.title) && isRelevantLocation(r.location)
-    );
+    // Filter to relevant roles — dual check: keyword filter + AI relevance score
+    const filtered = result.roles.filter((r) => {
+      // First pass: keyword-based filter
+      if (!isRelevantRole(r.title) || !isRelevantLocation(r.location)) return false;
+
+      // Second pass: relevance scoring (must score 60+)
+      const scored = scoreRole(r.title, result.companyName, r.location, r.description);
+      return scored.pass;
+    });
     relevantRoles += filtered.length;
 
     // Upsert relevant roles
