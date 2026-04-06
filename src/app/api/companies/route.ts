@@ -12,10 +12,10 @@ export async function GET(request: NextRequest) {
   const companies = await prisma.company.findMany({
     where,
     include: {
-      _count: {
-        select: {
-          roles: { where: { status: "active" } },
-        },
+      roles: {
+        where: { status: "active" },
+        select: { id: true, title: true, url: true, location: true },
+        orderBy: { firstSeen: "desc" },
       },
     },
     orderBy: { name: "asc" },
@@ -30,7 +30,8 @@ export async function GET(request: NextRequest) {
     glassdoorRating: c.glassdoorRating,
     hiringSignal: c.hiringSignal,
     lastScraped: c.lastScraped,
-    activeRoles: c._count.roles,
+    activeRoles: c.roles.length,
+    roles: c.roles,
   }));
 
   return NextResponse.json(result);

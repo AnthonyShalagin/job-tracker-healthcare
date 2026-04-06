@@ -14,6 +14,7 @@ interface CompanyData {
   hiringSignal: string;
   lastScraped: string | null;
   activeRoles: number;
+  roles: { id: string; title: string; url: string; location: string | null }[];
 }
 
 export default function CompaniesPage() {
