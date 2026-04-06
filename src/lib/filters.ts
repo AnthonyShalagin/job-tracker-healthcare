@@ -134,6 +134,9 @@ const IRRELEVANT_DEPARTMENTS = [
   "public sector",
   "labor sales",
   "commercial strategy",
+  "medical director", // typically requires MD
+  "chief medical officer",
+  "cmo",
   "clinical trial",
   "clinical trials",
   "clinical research",
@@ -174,7 +177,6 @@ const CLINICAL_TREATING = [
   "psychologist",
   "nurse practitioner",
   "physician",
-  "medical director", // typically a clinical MD role
 ];
 
 export function isRelevantRole(title: string): boolean {
