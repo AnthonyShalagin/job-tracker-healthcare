@@ -849,6 +849,139 @@ export const COMPANIES: CompanyConfig[] = [
     category: "staffing",
     // Healthcare + education staffing since 1991; 2900+ open positions
   },
+  // ── Category 12: Contract Rehab Companies ─────────────────────────
+  {
+    name: "HealthPRO Heritage",
+    website: "https://healthpro-heritage.com",
+    careersUrl: "https://healthpro-heritage.com/careers/career-opportunities",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+  {
+    name: "Aegis Therapies",
+    website: "https://aegistherapies.com",
+    careersUrl: "https://careers.aegistherapies.com",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+  {
+    name: "Therapy Management Corp",
+    website: "https://therapymgmt.com",
+    careersUrl: "https://therapymgmt.com",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+  {
+    name: "Functional Pathways",
+    website: "https://fprehab.com",
+    careersUrl: "https://fprehab.com/careers",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+  {
+    name: "Quality Rehab Management",
+    website: "https://qrmhealth.com",
+    careersUrl: "https://qrmhealth.com/qrm-careers",
+    atsType: "html",
+    category: "rehabilitation",
+  },
+
+  // ── Category 13: NJ/NYC SNF Chains ──────────────────────────────────
+  {
+    name: "Alaris Health",
+    website: "https://alarishealth.com",
+    careersUrl: "https://alarishealth.com/careers",
+    atsType: "html",
+    category: "snf",
+  },
+  {
+    name: "MJHS Health System",
+    website: "https://mjhs.org",
+    careersUrl: "https://mjhs.jobs",
+    atsType: "html",
+    category: "snf",
+  },
+  {
+    name: "ArchCare",
+    website: "https://archcare.org",
+    careersUrl: "https://archcare.org/careers",
+    atsType: "html",
+    category: "snf",
+  },
+  {
+    name: "Complete Care",
+    website: "https://mycompletecare.com",
+    careersUrl: "https://complete-care.com/about/careers",
+    atsType: "html",
+    category: "snf",
+  },
+  {
+    name: "NYC Health + Hospitals",
+    website: "https://nychealthandhospitals.org",
+    careersUrl: "https://employment.nychhc.org",
+    atsType: "html",
+    category: "healthsystem",
+  },
+
+  // ── Category 14: Remote Healthcare Ops ──────────────────────────────
+  {
+    name: "Molina Healthcare",
+    website: "https://molinahealthcare.com",
+    careersUrl: "https://careers.molinahealthcare.com",
+    atsType: "html",
+    category: "healthops",
+  },
+  {
+    name: "WellSky",
+    website: "https://wellsky.com",
+    careersUrl: "https://wellsky.com/about-us/careers",
+    atsType: "html",
+    category: "healthtech",
+  },
+  {
+    name: "MPOWERHealth",
+    website: "https://mpowerhealth.com",
+    careersUrl: "https://mpowerhealth.com/careers",
+    atsType: "html",
+    category: "healthops",
+  },
+
+  // ── Category 15: Additional IDD/Behavioral ─────────────────────────
+  {
+    name: "Services for the UnderServed",
+    website: "https://sus.org",
+    careersUrl: "https://sus.org/careers",
+    atsType: "html",
+    category: "idd",
+  },
+  {
+    name: "HeartShare Human Services",
+    website: "https://heartshare.org",
+    careersUrl: "https://heartshare.org/careers",
+    atsType: "html",
+    category: "nonprofit",
+  },
+  {
+    name: "SCO Family of Services",
+    website: "https://sco.org",
+    careersUrl: "https://sco.org/careers",
+    atsType: "html",
+    category: "nonprofit",
+  },
+  {
+    name: "Childrens Aid Society",
+    website: "https://childrenaidnyc.org",
+    careersUrl: "https://childrenaidnyc.org/careers",
+    atsType: "html",
+    category: "nonprofit",
+  },
+  {
+    name: "Good Shepherd Services",
+    website: "https://goodshepherds.org",
+    careersUrl: "https://goodshepherds.org/careers",
+    atsType: "html",
+    category: "nonprofit",
+  },
 ];
 
 export const CATEGORY_LABELS: Record<string, string> = {
