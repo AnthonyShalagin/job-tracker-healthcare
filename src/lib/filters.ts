@@ -270,7 +270,18 @@ export function isRelevantLocation(location: string | null | undefined): boolean
   // 3. Check if the specific city/area is in our allowed list
   if (ALLOWED_LOCATIONS.some((kw) => stripped.includes(kw))) return true;
 
-  // 4. Everything else (e.g., "Burlington, Massachusetts", "Torrance, California",
+  // 4. Check for NJ locations that are too far from Jersey City by public transit
+  const tooFarNJ = [
+    "cherry hill", "lakewood", "neptune", "brick", "shrewsbury", "ocean grove",
+    "phillipsburg", "morganville", "bordentown", "browns mills", "egg harbor",
+    "millville", "burlington", "trenton", "belvidere", "chester", "berkeley heights",
+    "vineland", "absecon", "woodbury", "moorestown", "marlton", "mt. laurel",
+    "mount laurel", "edison", "piscataway", "new brunswick", "somerville",
+    "belle mead", "eatontown", "long branch", "freehold",
+  ];
+  if (tooFarNJ.some((city) => stripped.includes(city))) return false;
+
+  // 5. Everything else (e.g., "Burlington, Massachusetts", "Torrance, California",
   //    "New Albany, Ohio") is out of commute range
   return false;
 }
