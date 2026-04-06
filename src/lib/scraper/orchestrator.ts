@@ -4,6 +4,8 @@ import { isRelevantRole, isRelevantLocation } from "@/lib/filters";
 import { scrapeGreenhouse } from "./greenhouse";
 import { scrapeAshby } from "./ashby";
 import { scrapeLever } from "./lever";
+import { scrapeWorkday } from "./workday";
+import { scrapeSmartRecruiters } from "./smartrecruiters";
 import { scrapeHTML } from "./html";
 import { verifyRoles } from "./verify";
 import { sendDigestEmail } from "@/lib/email";
@@ -45,6 +47,28 @@ async function scrapeCompany(config: CompanyConfig): Promise<ScraperResult> {
         };
       }
       return scrapeLever(config.name, config.atsBoardToken);
+
+    case "workday":
+      if (!config.workdayInstance || !config.workdaySlug) {
+        return {
+          companyName: config.name,
+          roles: [],
+          error: "No Workday instance/slug configured",
+          durationMs: 0,
+        };
+      }
+      return scrapeWorkday(config.name, config.workdayInstance, config.workdaySlug);
+
+    case "smartrecruiters":
+      if (!config.atsBoardToken) {
+        return {
+          companyName: config.name,
+          roles: [],
+          error: "No SmartRecruiters company ID configured",
+          durationMs: 0,
+        };
+      }
+      return scrapeSmartRecruiters(config.name, config.atsBoardToken);
 
     case "html":
       return scrapeHTML(config);

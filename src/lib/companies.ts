@@ -118,7 +118,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Brightline",
     website: "https://www.hellobrightline.com",
     careersUrl: "https://www.hellobrightline.com/about-us/careers/",
-    atsType: "html",
+    atsType: "ashby",
+    atsBoardToken: "hellobrightline",
     category: "telehealth",
   },
   {
@@ -133,14 +134,16 @@ export const COMPANIES: CompanyConfig[] = [
     name: "NOCD",
     website: "https://www.treatmyocd.com",
     careersUrl: "https://www.treatmyocd.com/about-us/careers",
-    atsType: "html",
+    atsType: "greenhouse",
+    atsBoardToken: "nocdinc",
     category: "telehealth",
   },
   {
     name: "Charlie Health",
     website: "https://www.charliehealth.com",
     careersUrl: "https://www.charliehealth.com/careers",
-    atsType: "html",
+    atsType: "greenhouse",
+    atsBoardToken: "charliehealth",
     category: "telehealth",
   },
   {
@@ -617,18 +620,22 @@ export const COMPANIES: CompanyConfig[] = [
   {
     name: "NewYork-Presbyterian",
     website: "https://www.nyp.org",
-    careersUrl: "https://careers.nyp.org/",
-    atsType: "html",
+    careersUrl: "https://nyp.wd1.myworkdayjobs.com/en-US/nypcareers",
+    atsType: "workday",
+    workdayInstance: "nyp.wd1",
+    workdaySlug: "nypcareers",
     category: "healthsystem",
-    // Top-ranked academic hospital; uses Workday ATS
+    // Top-ranked academic hospital; Workday API
   },
   {
     name: "Montefiore Health System",
     website: "https://www.montefioreeinstein.org",
-    careersUrl: "https://vizi.vizirecruiter.com/Montefiore-4461/",
-    atsType: "html",
+    careersUrl: "https://montefiore.wd12.myworkdayjobs.com/en-US/MMC",
+    atsType: "workday",
+    workdayInstance: "montefiore.wd12",
+    workdaySlug: "MMC",
     category: "healthsystem",
-    // Premier NYC academic health system; uses ViziRecruiter ATS
+    // Premier NYC academic health system; Workday API
   },
   {
     name: "Mount Sinai Health System",
@@ -735,8 +742,9 @@ export const COMPANIES: CompanyConfig[] = [
   {
     name: "Devoted Health",
     website: "https://devoted.com",
-    careersUrl: "https://devoted.com/careers/",
-    atsType: "html",
+    careersUrl: "https://careers.smartrecruiters.com/DevotedHealth",
+    atsType: "smartrecruiters",
+    atsBoardToken: "DevotedHealth",
     category: "healthtech",
     // Medicare Advantage insurer; NJ office, remote positions available
   },
@@ -744,7 +752,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Clover Health",
     website: "https://www.cloverhealth.com",
     careersUrl: "https://www.cloverhealth.com/about-us/careers",
-    atsType: "html",
+    atsType: "greenhouse",
+    atsBoardToken: "cloverhealth",
     category: "healthtech",
     // Medicare Advantage + health tech; Jersey City NJ office
   },
@@ -752,7 +761,8 @@ export const COMPANIES: CompanyConfig[] = [
     name: "Oscar Health",
     website: "https://www.hioscar.com",
     careersUrl: "https://www.hioscar.com/careers",
-    atsType: "html",
+    atsType: "greenhouse",
+    atsBoardToken: "oscar",
     category: "healthtech",
     // Tech-driven health insurance; NYC-based, 266 open positions
   },
