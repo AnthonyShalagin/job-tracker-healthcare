@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Company {
+  id              String      @id @default(cuid())
+  name            String      @unique
+  website         String?
+  careersUrl      String
+  atsType         String      // greenhouse | ashby | lever | html | unknown
+  atsBoardToken   String?
+  category        String      @default("telehealth")
+  glassdoorRating Float?
+  glassdoorUrl    String?
+  hiringSignal    String      @default("unknown") // active | dormant | cold_outreach | unknown
+  lastScraped     DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  roles           Role[]
+  news            CompanyNews[]
+  scrapeLogs      ScrapeLog[]
+}
+
+model Role {
+  id           String    @id @default(cuid())
+  companyId    String
+  company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  externalId   String?
+  title        String
+  url          String
+  location     String?
+  salary       String?
+  description  String?
+  postedDate   DateTime?
+  status       String    @default("active") // active | stale | closed | unverified
+  firstSeen    DateTime  @default(now())
+  lastVerified DateTime  @default(now())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([companyId, externalId])
+  @@index([status])
+  @@index([companyId])
+  @@index([postedDate])
+}
+
+model CompanyNews {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  headline  String
+  url       String?
+  date      DateTime
+  type      String?
+  createdAt DateTime @default(now())
+
+  @@index([companyId])
+}
+
+model ScrapeLog {
+  id         String   @id @default(cuid())
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  timestamp  DateTime @default(now())
+  status     String   // success | error | partial
+  rolesFound Int      @default(0)
+  rolesNew   Int      @default(0)
+  errors     String?
+  durationMs Int?
+
+  @@index([companyId])
+  @@index([timestamp])
+}
