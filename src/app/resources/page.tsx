@@ -4,43 +4,43 @@ const recruiters = [
   {
     name: "B.E. Smith / AMN Leadership Solutions",
     url: "https://www.besmith.com/",
-    specialty: "Ranked #1 healthcare executive search firm. Places Director through C-Suite across acute care, post-acute, and physician practices.",
-    whyEmma: "Director-level is their sweet spot. They cover post-acute care settings where Emma's rehab director background is a direct match.",
+    specialty: "Ranked #1 healthcare executive search firm by Modern Healthcare. Places Director through C-Suite across acute care, post-acute, and physician practices.",
+    whyEmma: "They specialize in post-acute and SNF leadership placements — exactly where a Director of Rehabilitation background is most valued. They also place IDD and behavioral health program directors. Your $9MM budget oversight and 100+ staff management is the profile they recruit for.",
     action: "Submit candidate profile at besmith.com",
-  },
-  {
-    name: "WittKieffer",
-    url: "https://wittkieffer.com/healthcare-search",
-    specialty: "Premier healthcare executive recruitment since 1969. Places directors, service line leaders, and assistant VPs.",
-    whyEmma: "Explicitly places director-level and service line leaders, not just C-suite. Strong reputation in healthcare.",
-    action: "Reach out to consultants via wittkieffer.com",
   },
   {
     name: "Clinical Management Consultants (CMC)",
     url: "https://www.clinicalmanagementconsultants.com/",
-    specialty: "Specializes in Director, VP, and C-Suite placements for hospitals and healthcare employers. Both interim and permanent.",
-    whyEmma: "Director-level healthcare is their entire business. They understand the clinical-to-ops career path.",
+    specialty: "Specializes exclusively in Director, VP, and C-Suite placements for hospitals and healthcare employers. Both interim and permanent.",
+    whyEmma: "CMC understands the clinical-to-ops career path — placing SLPs, PTs, and nurses who've moved into operations leadership. They fill Director of Rehab, Director of Clinical Services, and Program Director roles across SNFs, hospitals, and health systems in the NJ/NY market.",
     action: "Register at clinicalmanagementconsultants.com",
+  },
+  {
+    name: "WittKieffer",
+    url: "https://wittkieffer.com/healthcare-search",
+    specialty: "Premier healthcare executive recruitment since 1969. Places directors, service line leaders, and assistant VPs at health systems nationwide.",
+    whyEmma: "They recruit for Director of Operations and VP of Clinical Operations at health systems like Hackensack Meridian, RWJBarnabas, and Northwell — the exact employers on your target list. Follow their LinkedIn page (Current Executive Searches) for live openings.",
+    action: "Reach out to consultants via wittkieffer.com",
   },
   {
     name: "Kirby Bates Associates",
     url: "https://kirbybates.com/",
-    specialty: "Healthcare-only executive search. Deep relationships across health systems nationwide.",
-    whyEmma: "Healthcare-only firm with strong health system connections. Good for hospital/system ops director roles.",
+    specialty: "Healthcare-only executive search with deep relationships across NJ/NY health systems. Known for placing mission-and-margin-focused leaders.",
+    whyEmma: "Your Lean Six Sigma Yellow Belt, P&L experience ($5MM rehab revenue), and track record of eliminating a $2MM deficit while retaining 92% of staff is exactly the 'mission-and-margin' profile they look for. Strong in the NJ/NY market.",
     action: "Contact via kirbybates.com",
   },
   {
     name: "Korn Ferry (Healthcare Practice)",
     url: "https://www.kornferry.com/",
-    specialty: "Global executive search with a dedicated healthcare practice. Data-driven approach to placing senior executives.",
-    whyEmma: "Larger firm, more VP+ roles. Worth registering for their healthcare talent pipeline.",
+    specialty: "Global executive search with a dedicated healthcare practice. Data-driven approach. More VP+ level roles at large systems.",
+    whyEmma: "Best for VP-level opportunities at large organizations. Your Nuance/Microsoft experience (managing $6MM ARR, 150+ staff) differentiates you from candidates who've only worked in traditional healthcare — Korn Ferry values that hybrid clinical + tech-ops background.",
     action: "Create candidate profile at kornferry.com",
   },
   {
     name: "Duffy Group",
     url: "https://duffygroup.com/healthcare/",
-    specialty: "25+ years in healthcare executive search. Places CEOs, CFOs, COOs, clinical directors.",
-    whyEmma: "Covers director-level clinical and administrative roles across healthcare settings.",
+    specialty: "25+ years in healthcare executive search. Places COOs, clinical directors, and operational leaders. Strong in value-based care and population health.",
+    whyEmma: "Your Signify Health (value-based care, $500MM program) and Nuance/Microsoft (healthcare AI/tech) experience positions you for the growing intersection of clinical operations and value-based care that Duffy Group actively recruits for.",
     action: "Contact via duffygroup.com/healthcare",
   },
 ];
@@ -156,14 +156,14 @@ const events = [
 
 const communities = [
   {
-    name: "Healthcare Pulse (Slack)",
-    url: "https://www.manifold.group/what-we-do/healthcare-pulse-community",
-    description: "Invite-only Slack for healthcare executives. Peer networking with other leaders.",
-  },
-  {
     name: "CareOps Community (Slack)",
     url: "https://www.careops.org/careops-community",
-    description: "Clinical operations, process improvement, and care delivery. Virtual sessions and meetups.",
+    description: "Clinical operations, process improvement, and care delivery efficiency. Virtual sessions and in-person meetups at HLTH/ViVE. Free to join.",
+  },
+  {
+    name: "NLCDD Community of Practice",
+    url: "https://natleadership.org/",
+    description: "IDD leadership development and networking. Research, evidence-based practices, and Leadership Institutes for IDD sector leaders.",
   },
 ];
 
