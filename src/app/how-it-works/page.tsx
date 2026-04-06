@@ -194,7 +194,55 @@ export default function HowItWorksPage() {
             </div>
           </div>
         </section>
+        {/* Full Company List */}
+        <section className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm">
+          <h2 className="text-[16px] font-semibold text-stone-800 mb-4">All 147 Monitored Companies</h2>
+          <p className="text-[14px] text-stone-600 leading-relaxed mb-5">
+            These companies are checked every day for new director-level healthcare operations roles.
+            Companies are organized by category.
+          </p>
+          <CompanyDirectory />
+        </section>
       </div>
+    </div>
+  );
+}
+
+const companyData: Record<string, string[]> = {
+  "Telehealth / Virtual Care": ["Expressable","Presence Learning","Sprout Therapy Group","Great Speech","Better Speech","CORA Physical Therapy","Hazel Health","VocoVision","TinyEYE","Parallel Learning","Huddle Up Care","eLuma","Stepping Stones Group","3Y Health","Talkiatry","Brightline","Rula","NOCD","Charlie Health","InStride Health","AnswersNow","Cortica","Spring Health","Tava Health","Headspace","Cerebral","Teladoc Health","Amwell","MDLIVE","K Health","Hims & Hers Health","Two Chairs","Grow Therapy","Thriveworks","LifeStance Health","AbleTo","Quartet Health","Talkspace","Ro","Bicycle Health","Beacon Behavioral Partners"],
+  "Rehabilitation": ["Select Medical / Kessler","Encompass Health","Powerback Rehabilitation","Enhance Therapies","ScionHealth","PAM Health","ProMedica","BrightSpring Health Services","HealthPRO Heritage","Aegis Therapies","Therapy Management Corp","Functional Pathways","FOX Rehabilitation","Quality Rehab Management","Ivy Rehab Network","JAG Physical Therapy","Sigma Health Rehab","Trinity Rehab","EmpowerMe Wellness","SportsMed Physical Therapy","Professional Physical Therapy"],
+  "IDD / Developmental Disabilities": ["The Jewish Board","YAI","AHRC New York City","NJ Institute for Disabilities","Oaks Integrated Care","The Arc of New Jersey","Community Options","Bancroft","Elwyn","Devereux Advanced Behavioral Health","Spectrum360","Services for the UnderServed","Helen Keller Services"],
+  "Skilled Nursing Facilities": ["Centers Health Care","CareOne","Genesis HealthCare","Portopiccolo Group","Marquis Health Services","Alaris Health","MJHS Health System","ArchCare","Complete Care","CenterLight Health System","Epic Healthcare Management","Bergen New Bridge Medical Center","RiverSpring Living"],
+  "Health Systems": ["Hackensack Meridian Health","RWJBarnabas Health","Northwell Health","NewYork-Presbyterian","Montefiore Health System","Mount Sinai Health System","NYC Health + Hospitals","AtlantiCare"],
+  "Healthcare Ops / Value-Based Care": ["Headway","Alma","Lyra Health","Included Health","Evolent Health","Agilon Health","Cityblock Health","Molina Healthcare","MPOWERHealth","US Pediatric Partners"],
+  "Home Health / Hospice": ["VNS Health","BAYADA Home Health Care","Aveanna Healthcare","Amedisys","Enhabit Home Health & Hospice","Addus HomeCare","LHC Group","CareBridge / Elevance Health","ConcertoCare"],
+  "ABA / Autism Providers": ["Action Behavior Centers","Hopebridge","InBloom Autism Services","LEARN Behavioral","BlueSprig Autism","Trumpet Behavioral Health","Centria Autism","Bierman Autism Centers"],
+  "Health Tech / Clinical Ops": ["Devoted Health","Clover Health","Oscar Health","Noom","Omada Health","Hinge Health","Sword Health","Virta Health","Wondr Health","WellSky","Clipboard Health"],
+  "Healthcare Nonprofits": ["Catholic Charities NY","HeartShare Human Services","SCO Family of Services","Childrens Aid Society","Rutgers UBHC","Community Healthcare Network","Ryan Health","Metropolitan Family Health Network","Henry Street Settlement","Good Shepherd Services"],
+  "Healthcare Staffing": ["AMN Healthcare","Cross Country Healthcare","Soliant Health"],
+};
+
+function CompanyDirectory() {
+  return (
+    <div className="space-y-5">
+      {Object.entries(companyData).map(([category, companies]) => (
+        <div key={category}>
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-[13px] font-semibold text-stone-700">{category}</h3>
+            <span className="text-[11px] text-stone-400">({companies.length})</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {companies.map((name) => (
+              <span
+                key={name}
+                className="px-2.5 py-1 rounded-md text-[12px] bg-stone-50 text-stone-600 border border-stone-100"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
