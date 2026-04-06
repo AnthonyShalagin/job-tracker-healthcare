@@ -20,10 +20,10 @@ export function FilterBar({
   onCategoryChange,
 }: FilterBarProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 mb-6">
+    <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
       <div className="relative flex-1">
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400"
+          className="absolute left-3 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-stone-400"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={2}
@@ -37,19 +37,19 @@ export function FilterBar({
         </svg>
         <input
           type="text"
-          placeholder="Search roles..."
+          placeholder="Search by title or company..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 bg-white"
+          className="w-full pl-9 pr-4 py-[7px] border border-stone-200 rounded-lg text-[13px] text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white transition-colors"
         />
       </div>
 
       <select
         value={status}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 bg-white text-stone-700"
+        className="px-3 py-[7px] border border-stone-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-stone-700 cursor-pointer"
       >
-        <option value="all">All Statuses</option>
+        <option value="all">All statuses</option>
         <option value="active">Active</option>
         <option value="stale">Stale</option>
         <option value="closed">Closed</option>
@@ -58,9 +58,9 @@ export function FilterBar({
       <select
         value={category}
         onChange={(e) => onCategoryChange(e.target.value)}
-        className="px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 bg-white text-stone-700"
+        className="px-3 py-[7px] border border-stone-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-stone-700 cursor-pointer"
       >
-        <option value="">All Categories</option>
+        <option value="">All categories</option>
         {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
           <option key={key} value={key}>
             {label}

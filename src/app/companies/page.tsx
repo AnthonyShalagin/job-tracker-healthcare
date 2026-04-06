@@ -36,26 +36,26 @@ export default function CompaniesPage() {
   }, [categoryFilter]);
 
   const totalActive = companies.reduce((sum, c) => sum + c.activeRoles, 0);
+  const withRoles = companies.filter((c) => c.activeRoles > 0).length;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-stone-800 mb-1">
-          Tracked Companies
+    <div className="max-w-[1200px] mx-auto px-6 py-8">
+      <div className="mb-6">
+        <h1 className="text-[22px] font-semibold text-stone-900 tracking-tight">
+          Companies
         </h1>
-        <p className="text-sm text-stone-500">
-          {companies.length} companies monitored. {totalActive} active roles
-          found.
+        <p className="text-[13px] text-stone-500 mt-0.5">
+          {companies.length} companies tracked, {withRoles} with active roles ({totalActive} total)
         </p>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-5">
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="px-3 py-2 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-stone-300 bg-white text-stone-700"
+          className="px-3 py-[7px] border border-stone-200 rounded-lg text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white text-stone-700 cursor-pointer"
         >
-          <option value="">All Categories</option>
+          <option value="">All categories</option>
           {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
             <option key={key} value={key}>
               {label}
@@ -65,11 +65,11 @@ export default function CompaniesPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-16">
-          <div className="h-6 w-6 border-2 border-stone-300 border-t-stone-600 rounded-full animate-spin" />
+        <div className="flex items-center justify-center py-20">
+          <div className="h-5 w-5 border-2 border-stone-200 border-t-stone-500 rounded-full animate-spin" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {companies.map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
