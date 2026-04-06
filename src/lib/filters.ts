@@ -134,6 +134,19 @@ const IRRELEVANT_DEPARTMENTS = [
   "public sector",
   "labor sales",
   "commercial strategy",
+  "clinical trial",
+  "clinical trials",
+  "clinical research",
+  "pharmaceutical",
+  "pharma",
+  "drug development",
+  "medical affairs",
+  "medical science liaison",
+  "pharmacovigilance",
+  "regulatory affairs",
+  "real world evidence",
+  "biostatistic",
+  "epidemiol",
 ];
 
 // Purely clinical treating roles (no leadership scope)
