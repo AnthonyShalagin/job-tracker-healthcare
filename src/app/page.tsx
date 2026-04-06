@@ -14,6 +14,7 @@ interface Role {
   userStatus: string | null;
   firstSeen: string;
   postedDate: string | null;
+  relevanceScore?: number;
   company: {
     name: string;
     category: string;

@@ -13,6 +13,7 @@ interface Role {
   userStatus: string | null;
   firstSeen: string;
   postedDate: string | null;
+  relevanceScore?: number;
   company: {
     name: string;
     category: string;
@@ -172,6 +173,15 @@ export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusCha
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
+                    {role.relevanceScore && role.relevanceScore >= 80 && (
+                      <span className="shrink-0 w-2 h-2 rounded-full bg-emerald-400" title={`Relevance: ${role.relevanceScore}/100`} />
+                    )}
+                    {role.relevanceScore && role.relevanceScore >= 65 && role.relevanceScore < 80 && (
+                      <span className="shrink-0 w-2 h-2 rounded-full bg-blue-400" title={`Relevance: ${role.relevanceScore}/100`} />
+                    )}
+                    {role.relevanceScore && role.relevanceScore < 65 && (
+                      <span className="shrink-0 w-2 h-2 rounded-full bg-stone-300" title={`Relevance: ${role.relevanceScore}/100`} />
+                    )}
                     <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:underline">
                       {role.title}
                     </a>

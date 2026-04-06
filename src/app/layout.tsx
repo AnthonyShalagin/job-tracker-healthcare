@@ -59,10 +59,10 @@ export default function RootLayout({
                 Resources
               </Link>
               <Link
-                href="/guide"
+                href="/how-it-works"
                 className="px-3 py-1.5 text-[13px] font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-md transition-colors"
               >
-                Guide
+                How It Works
               </Link>
             </div>
           </nav>
