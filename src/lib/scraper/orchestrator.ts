@@ -184,7 +184,7 @@ export async function runScrapeOrchestrator(
       if (!isRelevantRole(r.title) || !isRelevantLocation(r.location)) return false;
 
       // Second pass: relevance scoring (must score 60+)
-      const scored = scoreRole(r.title, result.companyName, r.location, r.description);
+      const scored = scoreRole(r.title, result.companyName, r.location ?? null, r.description);
       return scored.pass;
     });
     relevantRoles += filtered.length;
