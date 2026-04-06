@@ -41,7 +41,6 @@ export async function scrapeWorkday(
       },
       body,
       signal: AbortSignal.timeout(15000),
-      // @ts-expect-error - Next.js extends fetch with cache options
       cache: "no-store",
     });
 
