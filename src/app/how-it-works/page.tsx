@@ -66,35 +66,41 @@ export default function HowItWorksPage() {
           </ol>
         </section>
 
-        {/* The Relevance Dots */}
+        {/* The Fit Score */}
         <section className="bg-white rounded-xl border border-stone-200 p-6 shadow-sm">
-          <h2 className="text-[16px] font-semibold text-stone-800 mb-3">What the Colored Dots Mean</h2>
+          <h2 className="text-[16px] font-semibold text-stone-800 mb-3">What the Fit Score Means</h2>
           <p className="text-[14px] text-stone-600 leading-relaxed mb-4">
-            Next to each role title, you may see a small colored dot. This is the relevance score:
+            Each role has a Fit score from 60 to 100 in the table. This is a number that represents how
+            well the role matches your specific background. Higher is better.
           </p>
           <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-emerald-400 shrink-0" />
+            <div className="flex items-start gap-3">
+              <span className="shrink-0 w-10 text-center text-[15px] font-bold text-emerald-600 mt-0.5">80+</span>
               <div>
-                <p className="text-[14px] font-medium text-stone-800">Green dot — Strong match (80+)</p>
-                <p className="text-[13px] text-stone-500">Title, industry, and location are all a great fit. Prioritize these.</p>
+                <p className="text-[14px] font-medium text-stone-800">Strong match</p>
+                <p className="text-[13px] text-stone-500">Title, industry, and location are all a great fit for your background. Apply to these first.</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-blue-400 shrink-0" />
+            <div className="flex items-start gap-3">
+              <span className="shrink-0 w-10 text-center text-[15px] font-bold text-blue-600 mt-0.5">70-79</span>
               <div>
-                <p className="text-[14px] font-medium text-stone-800">Blue dot — Good match (65-79)</p>
-                <p className="text-[13px] text-stone-500">Worth reviewing. May be a slightly different setting or title than ideal.</p>
+                <p className="text-[14px] font-medium text-stone-800">Good match</p>
+                <p className="text-[13px] text-stone-500">Worth reviewing. May be a slightly different setting or title than your ideal role, but still relevant.</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-stone-300 shrink-0" />
+            <div className="flex items-start gap-3">
+              <span className="shrink-0 w-10 text-center text-[15px] font-bold text-stone-400 mt-0.5">60-69</span>
               <div>
-                <p className="text-[14px] font-medium text-stone-800">Gray dot — Possible match (60-64)</p>
-                <p className="text-[13px] text-stone-500">Meets the minimum criteria but may not be as strong a fit. Review carefully.</p>
+                <p className="text-[14px] font-medium text-stone-800">Possible match</p>
+                <p className="text-[13px] text-stone-500">Meets the minimum criteria but may not be as strong a fit. Read the job description carefully before applying.</p>
               </div>
             </div>
           </div>
+          <p className="text-[13px] text-stone-400 mt-4">
+            The score is calculated based on: how closely the title matches your target roles (e.g., &ldquo;Director of Rehabilitation&rdquo; scores higher than &ldquo;Director of Operations&rdquo;),
+            whether the company is in your target industry (rehab, IDD, behavioral health get bonus points),
+            and how close the location is to Jersey City.
+          </p>
         </section>
 
         {/* How Roles Are Sorted */}

@@ -155,6 +155,7 @@ export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusCha
               <th className="px-4 py-3 text-left text-[11px] font-semibold text-stone-400 uppercase tracking-wider cursor-pointer hover:text-stone-600" onClick={() => onSort("postedDate")}>
                 Posted <SortIndicator active={sortField === "postedDate"} order={sortOrder} />
               </th>
+              <th className="px-4 py-3 text-center text-[11px] font-semibold text-stone-400 uppercase tracking-wider w-[60px]">Fit</th>
               <th className="px-4 py-3 text-right text-[11px] font-semibold text-stone-400 uppercase tracking-wider w-[120px]"></th>
             </tr>
           </thead>
@@ -173,15 +174,6 @@ export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusCha
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    {role.relevanceScore && role.relevanceScore >= 80 && (
-                      <span className="shrink-0 w-2 h-2 rounded-full bg-emerald-400" title={`Relevance: ${role.relevanceScore}/100`} />
-                    )}
-                    {role.relevanceScore && role.relevanceScore >= 65 && role.relevanceScore < 80 && (
-                      <span className="shrink-0 w-2 h-2 rounded-full bg-blue-400" title={`Relevance: ${role.relevanceScore}/100`} />
-                    )}
-                    {role.relevanceScore && role.relevanceScore < 65 && (
-                      <span className="shrink-0 w-2 h-2 rounded-full bg-stone-300" title={`Relevance: ${role.relevanceScore}/100`} />
-                    )}
                     <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:underline">
                       {role.title}
                     </a>
@@ -193,6 +185,13 @@ export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusCha
                 <td className="px-4 py-3"><span className="text-[13px] text-stone-500">{role.location || "Remote"}</span></td>
                 <td className="px-4 py-3"><span className="text-[13px] text-stone-500">{role.salary || "—"}</span></td>
                 <td className="px-4 py-3"><span className="text-[13px] text-stone-400">{formatPosted(role.postedDate, role.firstSeen)}</span></td>
+                <td className="px-4 py-3 text-center">
+                  <span className={`text-[13px] font-semibold ${
+                    (role.relevanceScore || 0) >= 80 ? "text-emerald-600" :
+                    (role.relevanceScore || 0) >= 70 ? "text-blue-600" :
+                    "text-stone-400"
+                  }`}>{role.relevanceScore || "—"}</span>
+                </td>
                 <td className="px-4 py-3 text-right">
                   <TrackMenu role={role} onSelect={(s) => handleChange(role.id, s)} />
                 </td>
