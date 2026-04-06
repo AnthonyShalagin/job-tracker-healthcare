@@ -27,7 +27,7 @@ export async function scrapeWorkday(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "User-Agent": "JobTrackerHealthcare/1.0",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         limit: 100,
