@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { runScrapeOrchestrator } from "@/lib/scraper/orchestrator";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");

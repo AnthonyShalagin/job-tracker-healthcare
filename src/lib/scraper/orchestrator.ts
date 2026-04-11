@@ -296,10 +296,12 @@ export async function runScrapeOrchestrator(
     });
   }
 
-  // Verify ALL active roles — visit each page to confirm it's still live
+  // Verify active roles older than 1 day — visit each page to confirm it's still live
+  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const rolesToVerify = await prisma.role.findMany({
     where: {
       status: "active",
+      firstSeen: { lt: oneDayAgo },
     },
     select: { id: true, url: true },
   });
