@@ -191,7 +191,7 @@ export default function LeadsPage() {
   const signalCount = leads.filter((l) => l.tier === "signal").length;
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-8">
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div className="mb-6">
         <h1 className="text-[22px] font-semibold text-stone-900 tracking-tight">
           Hiring Leads

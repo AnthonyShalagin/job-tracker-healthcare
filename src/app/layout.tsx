@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import { MobileNav } from "@/components/MobileNav";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,6 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Healthcare Job Tracker",
   description: "Director-level healthcare operations roles, verified daily",
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
 };
 
 export default function RootLayout({
@@ -21,8 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#f8f9fa] font-[family-name:var(--font-inter)]">
+        {/* Desktop header */}
         <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-stone-200/60">
-          <nav className="max-w-[1200px] mx-auto px-6 h-[56px] flex items-center justify-between">
+          <nav className="max-w-[1200px] mx-auto px-4 sm:px-6 h-[56px] flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-stone-800 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -33,7 +36,8 @@ export default function RootLayout({
                 Job Tracker
               </span>
             </Link>
-            <div className="flex items-center gap-1">
+            {/* Desktop nav links */}
+            <div className="hidden md:flex items-center gap-1">
               <Link
                 href="/"
                 className="px-3 py-1.5 text-[13px] font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-md transition-colors"
@@ -67,7 +71,9 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        {/* Mobile bottom tab bar */}
+        <MobileNav />
       </body>
     </html>
   );

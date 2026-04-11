@@ -88,7 +88,7 @@ export default function Dashboard() {
   const appliedCount = roles.filter((r) => r.userStatus === "applied").length;
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-8">
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-1">

@@ -2,7 +2,7 @@
 
 export default function HowItWorksPage() {
   return (
-    <div className="max-w-[800px] mx-auto px-6 py-8">
+    <div className="max-w-[800px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div className="mb-8">
         <h1 className="text-[22px] font-semibold text-stone-900 tracking-tight">
           How It Works

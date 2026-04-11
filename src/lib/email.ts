@@ -5,13 +5,28 @@ interface RoleWithCompany {
   url: string;
   location: string | null;
   salary: string | null;
+  relevanceScore?: number | null;
+  firstSeen: Date;
   company: { name: string };
 }
 
-export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
+export async function sendDigestEmail(
+  allActiveRoles: RoleWithCompany[],
+  newRoleCount: number
+): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.log("RESEND_API_KEY not set, skipping email");
+    return;
+  }
+
+  const recipients = (process.env.NOTIFICATION_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+
+  if (recipients.length === 0) {
+    console.log("NOTIFICATION_EMAILS is empty, skipping email");
     return;
   }
 
@@ -25,9 +40,13 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
     day: "numeric",
   });
 
-  const roleRows = roles
-    .map(
-      (r) => `
+  // Separate new roles (first seen in last 24h) from existing
+  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+  const newRoles = allActiveRoles.filter((r) => r.firstSeen.getTime() > oneDayAgo);
+  const existingRoles = allActiveRoles.filter((r) => r.firstSeen.getTime() <= oneDayAgo);
+
+  function roleRow(r: RoleWithCompany, isNew: boolean): string {
+    return `
       <tr>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #525252;">
           ${r.company.name}
@@ -36,16 +55,29 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
           <a href="${r.url}" style="color: #2563eb; text-decoration: none; font-weight: 500;">
             ${r.title}
           </a>
+          ${isNew ? ' <span style="background: #d1fae5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 600;">NEW</span>' : ""}
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #737373;">
           ${r.location || "Remote"}
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #737373;">
-          ${r.salary || "Not listed"}
+          ${r.salary || "—"}
         </td>
-      </tr>`
-    )
-    .join("");
+      </tr>`;
+  }
+
+  const newRoleRows = newRoles.map((r) => roleRow(r, true)).join("");
+  const existingRoleRows = existingRoles.map((r) => roleRow(r, false)).join("");
+
+  const summaryLine = newRoleCount > 0
+    ? `<strong>${newRoleCount} new role${newRoleCount === 1 ? "" : "s"}</strong> found today. ${allActiveRoles.length} active total.`
+    : `${allActiveRoles.length} active role${allActiveRoles.length === 1 ? "" : "s"} matching your profile. No new roles today.`;
+
+  const subject = newRoleCount > 0
+    ? `${newRoleCount} new + ${allActiveRoles.length} active — Healthcare Job Tracker`
+    : `Daily update: ${allActiveRoles.length} active roles — Healthcare Job Tracker`;
+
+  const tableRows = newRoleRows + existingRoleRows;
 
   const html = `
     <div style="max-width: 700px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -57,7 +89,7 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
       </div>
       <div style="padding: 20px 24px; background: white;">
         <p style="margin: 0 0 16px 0; font-size: 15px; color: #292524;">
-          <strong>${roles.length} new role${roles.length === 1 ? "" : "s"}</strong> found matching your profile.
+          ${summaryLine}
         </p>
         <table style="width: 100%; border-collapse: collapse; border: 1px solid #e5e5e5; border-radius: 6px;">
           <thead>
@@ -68,7 +100,7 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
               <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Salary</th>
             </tr>
           </thead>
-          <tbody>${roleRows}</tbody>
+          <tbody>${tableRows}</tbody>
         </table>
       </div>
       <div style="padding: 16px 24px; background: #fafaf9; border-radius: 0 0 8px 8px; text-align: center;">
@@ -79,10 +111,16 @@ export async function sendDigestEmail(roles: RoleWithCompany[]): Promise<void> {
     </div>
   `;
 
-  await resend.emails.send({
-    from: "Job Tracker <onboarding@resend.dev>",
-    to: (process.env.NOTIFICATION_EMAILS || "").split(",").map((e) => e.trim()).filter(Boolean),
-    subject: `${roles.length} new role${roles.length === 1 ? "" : "s"} found — Healthcare Job Tracker`,
-    html,
-  });
+  try {
+    const result = await resend.emails.send({
+      from: "Job Tracker <onboarding@resend.dev>",
+      to: recipients,
+      subject,
+      html,
+    });
+    console.log("Email sent:", JSON.stringify(result));
+  } catch (err) {
+    console.error("Email send failed:", err);
+    throw err;
+  }
 }

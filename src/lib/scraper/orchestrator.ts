@@ -9,6 +9,7 @@ import { scrapeWorkday } from "./workday";
 import { scrapeSmartRecruiters } from "./smartrecruiters";
 import { scrapeICIMS } from "./icims";
 import { scrapeHTML } from "./html";
+import { scrapeJSearch } from "./jsearch";
 import { verifyRoles } from "./verify";
 import { sendDigestEmail } from "@/lib/email";
 import { CompanyConfig, ScraperResult } from "./types";
@@ -158,8 +159,16 @@ export async function runScrapeOrchestrator(
     });
   }
 
-  // Scrape all companies
+  // Scrape all companies via their native APIs
   const results = await runBatch(configs, scrapeCompany, CONCURRENCY);
+
+  // Also run JSearch to find roles from Google for Jobs (covers Indeed, LinkedIn, etc.)
+  try {
+    const jsearchResults = await scrapeJSearch();
+    results.push(...jsearchResults);
+  } catch (err) {
+    console.error("JSearch scrape failed:", err);
+  }
 
   let totalRolesFound = 0;
   let relevantRoles = 0;
@@ -167,9 +176,24 @@ export async function runScrapeOrchestrator(
   const errors: { company: string; error: string }[] = [];
 
   for (const result of results) {
-    const company = await prisma.company.findUnique({
+    // For JSearch results, auto-create the company if it doesn't exist
+    let company = await prisma.company.findUnique({
       where: { name: result.companyName },
     });
+
+    if (!company && result.roles.length > 0) {
+      // Company from JSearch not in our config — create it dynamically
+      company = await prisma.company.create({
+        data: {
+          name: result.companyName,
+          website: "",
+          careersUrl: "",
+          atsType: "unknown",
+          category: "jsearch",
+        },
+      });
+    }
+
     if (!company) continue;
 
     totalRolesFound += result.roles.length;
@@ -272,12 +296,10 @@ export async function runScrapeOrchestrator(
     });
   }
 
-  // Verify roles older than 3 days
-  const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+  // Verify ALL active roles — visit each page to confirm it's still live
   const rolesToVerify = await prisma.role.findMany({
     where: {
       status: "active",
-      firstSeen: { lt: threeDaysAgo },
     },
     select: { id: true, url: true },
   });
@@ -311,18 +333,21 @@ export async function runScrapeOrchestrator(
     data: { status: "stale" },
   });
 
-  // Send email digest if there are new roles
-  if (newRoles > 0) {
-    const newRolesList = await prisma.role.findMany({
-      where: {
-        firstSeen: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-      },
-      include: { company: true },
-      orderBy: { firstSeen: "desc" },
-    });
+  // Send daily email digest with all active roles
+  const allActiveRoles = await prisma.role.findMany({
+    where: {
+      status: "active",
+      userStatus: { not: "dismissed" },
+    },
+    include: { company: true },
+    orderBy: [{ firstSeen: "desc" }],
+  });
 
-    if (newRolesList.length > 0) {
-      await sendDigestEmail(newRolesList);
+  if (allActiveRoles.length > 0) {
+    try {
+      await sendDigestEmail(allActiveRoles, newRoles);
+    } catch (err) {
+      console.error("Failed to send digest email:", err);
     }
   }
 

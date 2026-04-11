@@ -202,23 +202,47 @@ export function RoleTable({ roles, sortField, sortOrder, onSort, onUserStatusCha
       </div>
 
       {/* Mobile */}
-      <div className="md:hidden space-y-2">
+      <div className="md:hidden space-y-2.5">
         {sorted.map((role) => (
-          <div key={role.id} className={`bg-white rounded-xl border border-stone-200 p-4 shadow-sm ${role.userStatus === "dismissed" ? "opacity-30" : ""}`}>
-            <div className="flex items-start justify-between gap-2 mb-1">
-              <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider">{role.company.name}</span>
-              <TrackMenu role={role} onSelect={(s) => handleChange(role.id, s)} />
+          <div key={role.id} className={`bg-white rounded-xl border border-stone-200 p-4 shadow-sm transition-opacity ${role.userStatus === "dismissed" ? "opacity-30" : ""}`}>
+            <div className="flex items-start justify-between gap-2 mb-1.5">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-[11px] font-semibold text-stone-400 uppercase tracking-wider truncate">{role.company.name}</span>
+                {isNew(role.firstSeen) && (
+                  <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-700">NEW</span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {role.relevanceScore && (
+                  <span className={`text-[13px] font-semibold ${
+                    role.relevanceScore >= 80 ? "text-emerald-600" :
+                    role.relevanceScore >= 70 ? "text-blue-600" :
+                    "text-stone-400"
+                  }`}>{role.relevanceScore}</span>
+                )}
+                <TrackMenu role={role} onSelect={(s) => handleChange(role.id, s)} />
+              </div>
             </div>
-            <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[14px] font-medium text-blue-600 hover:text-blue-700 leading-snug block mb-2">
+            <a href={role.url} target="_blank" rel="noopener noreferrer" className="text-[15px] font-medium text-blue-600 active:text-blue-800 leading-snug block mb-2">
               {role.title}
-              {isNew(role.firstSeen) && (
-                <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-700">NEW</span>
-              )}
             </a>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-stone-400">
-              <span>{role.location || "Remote"}</span>
-              <span>{formatPosted(role.postedDate, role.firstSeen)}</span>
-              {role.salary && <span className="text-stone-500 font-medium">{role.salary}</span>}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-stone-400">
+              <span className="flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                {role.location || "Remote"}
+              </span>
+              <span className="flex items-center gap-1">
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {formatPosted(role.postedDate, role.firstSeen)}
+              </span>
+              {role.salary && (
+                <span className="text-stone-500 font-medium">{role.salary}</span>
+              )}
             </div>
           </div>
         ))}
