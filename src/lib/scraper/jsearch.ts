@@ -96,17 +96,13 @@ export async function scrapeJSearch(): Promise<ScraperResult[]> {
   const start = Date.now();
 
   // Targeted queries — each one costs 1 API credit
+  // Keep to 5 queries to fit within 60s cron window (runs parallel with company scrapers)
   const queries = [
-    '"director of rehabilitation" healthcare',
-    '"director of operations" healthcare',
-    '"director of clinical operations" healthcare',
-    '"director of patient services" healthcare',
-    '"program director" IDD OR "developmental disabilities"',
-    '"director of quality" healthcare',
-    '"VP of operations" healthcare OR "vice president of operations" healthcare',
-    '"director of care coordination" healthcare OR "care management"',
-    '"senior manager" "healthcare operations"',
-    '"clinical operations manager" healthcare',
+    '"director of rehabilitation" OR "rehabilitation director" healthcare',
+    '"director of operations" OR "director of clinical operations" healthcare',
+    '"program director" healthcare OR IDD OR "developmental disabilities"',
+    '"VP of operations" OR "vice president" healthcare',
+    '"director of quality" OR "director of care" OR "clinical operations manager" healthcare',
   ];
 
   const allJobs: JSearchJob[] = [];

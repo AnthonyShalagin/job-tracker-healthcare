@@ -159,16 +159,16 @@ export async function runScrapeOrchestrator(
     });
   }
 
-  // Scrape all companies via their native APIs
-  const results = await runBatch(configs, scrapeCompany, CONCURRENCY);
+  // Scrape company APIs and JSearch in parallel to stay within 60s
+  const [companyResults, jsearchResults] = await Promise.all([
+    runBatch(configs, scrapeCompany, CONCURRENCY),
+    scrapeJSearch().catch((err) => {
+      console.error("JSearch scrape failed:", err);
+      return [] as ScraperResult[];
+    }),
+  ]);
 
-  // Also run JSearch to find roles from Google for Jobs (covers Indeed, LinkedIn, etc.)
-  try {
-    const jsearchResults = await scrapeJSearch();
-    results.push(...jsearchResults);
-  } catch (err) {
-    console.error("JSearch scrape failed:", err);
-  }
+  const results = [...companyResults, ...jsearchResults];
 
   let totalRolesFound = 0;
   let relevantRoles = 0;
