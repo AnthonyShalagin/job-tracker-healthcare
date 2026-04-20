@@ -12,7 +12,8 @@ export async function GET(request: Request) {
   }
 
   try {
-    const report = await runScrapeOrchestrator();
+    // Skip verification in daily cron — runs in separate /api/verify endpoint
+    const report = await runScrapeOrchestrator(undefined, { skipVerification: true });
     return NextResponse.json(report);
   } catch (err) {
     console.error("Cron scrape failed:", err);

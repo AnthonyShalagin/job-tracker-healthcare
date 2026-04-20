@@ -127,7 +127,8 @@ export interface OrchestratorReport {
 }
 
 export async function runScrapeOrchestrator(
-  companyFilter?: string[]
+  companyFilter?: string[],
+  options: { skipVerification?: boolean; skipEmail?: boolean } = {}
 ): Promise<OrchestratorReport> {
   const start = Date.now();
   const configs = companyFilter
@@ -297,14 +298,17 @@ export async function runScrapeOrchestrator(
   }
 
   // Verify active roles older than 1 day — visit each page to confirm it's still live
+  // Skippable via options to fit within Vercel's 60s Hobby-plan function limit
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  const rolesToVerify = await prisma.role.findMany({
-    where: {
-      status: "active",
-      firstSeen: { lt: oneDayAgo },
-    },
-    select: { id: true, url: true },
-  });
+  const rolesToVerify = options.skipVerification
+    ? []
+    : await prisma.role.findMany({
+        where: {
+          status: "active",
+          firstSeen: { lt: oneDayAgo },
+        },
+        select: { id: true, url: true },
+      });
 
   let rolesClosed = 0;
   if (rolesToVerify.length > 0) {
@@ -345,7 +349,7 @@ export async function runScrapeOrchestrator(
     orderBy: [{ firstSeen: "desc" }],
   });
 
-  if (allActiveRoles.length > 0) {
+  if (allActiveRoles.length > 0 && !options.skipEmail) {
     try {
       await sendDigestEmail(allActiveRoles, newRoles);
     } catch (err) {
