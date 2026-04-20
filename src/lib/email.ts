@@ -7,7 +7,19 @@ interface RoleWithCompany {
   salary: string | null;
   relevanceScore?: number | null;
   firstSeen: Date;
+  postedDate?: Date | null;
   company: { name: string };
+}
+
+function formatPosted(date: Date | null | undefined): string {
+  if (!date) return "Unknown";
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "Unknown";
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 export async function sendDigestEmail(
@@ -46,6 +58,7 @@ export async function sendDigestEmail(
   const existingRoles = allActiveRoles.filter((r) => r.firstSeen.getTime() <= oneDayAgo);
 
   function roleRow(r: RoleWithCompany, isNew: boolean): string {
+    const posted = formatPosted(r.postedDate);
     return `
       <tr>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #525252;">
@@ -59,6 +72,9 @@ export async function sendDigestEmail(
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #737373;">
           ${r.location || "Remote"}
+        </td>
+        <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: ${posted === "Unknown" ? "#a8a29e" : "#737373"};">
+          ${posted}
         </td>
         <td style="padding: 10px 12px; border-bottom: 1px solid #e5e5e5; font-size: 14px; color: #737373;">
           ${r.salary || "—"}
@@ -97,6 +113,7 @@ export async function sendDigestEmail(
               <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Company</th>
               <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Role</th>
               <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Location</th>
+              <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Posted</th>
               <th style="padding: 10px 12px; text-align: left; font-size: 12px; font-weight: 600; color: #78716c; text-transform: uppercase; letter-spacing: 0.5px;">Salary</th>
             </tr>
           </thead>
