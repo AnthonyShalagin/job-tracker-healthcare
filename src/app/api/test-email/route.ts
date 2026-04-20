@@ -13,7 +13,10 @@ export async function POST(request: Request) {
   const allActiveRoles = await prisma.role.findMany({
     where: {
       status: "active",
-      NOT: { userStatus: "dismissed" },
+      OR: [
+        { userStatus: null },
+        { userStatus: { not: "dismissed" } },
+      ],
     },
     include: { company: true },
     orderBy: [{ firstSeen: "desc" }],
