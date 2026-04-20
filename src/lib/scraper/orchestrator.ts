@@ -14,7 +14,7 @@ import { verifyRoles } from "./verify";
 import { sendDigestEmail } from "@/lib/email";
 import { CompanyConfig, ScraperResult } from "./types";
 
-const CONCURRENCY = 5;
+const CONCURRENCY = 20;
 
 async function scrapeCompany(config: CompanyConfig): Promise<ScraperResult> {
   switch (config.atsType) {
@@ -131,34 +131,49 @@ export async function runScrapeOrchestrator(
   options: { skipVerification?: boolean; skipEmail?: boolean } = {}
 ): Promise<OrchestratorReport> {
   const start = Date.now();
-  const configs = companyFilter
+  const allConfigs = companyFilter
     ? COMPANIES.filter((c) =>
         companyFilter.some((f) => c.name.toLowerCase().includes(f.toLowerCase()))
       )
     : COMPANIES;
 
-  // Ensure all companies exist in DB
-  for (const config of configs) {
-    await prisma.company.upsert({
-      where: { name: config.name },
-      create: {
-        name: config.name,
-        website: config.website,
-        careersUrl: config.careersUrl,
-        atsType: config.atsType,
-        atsBoardToken: config.atsBoardToken,
-        category: config.category,
-        glassdoorRating: config.glassdoorRating,
-        glassdoorUrl: config.glassdoorUrl,
-      },
-      update: {
-        careersUrl: config.careersUrl,
-        atsType: config.atsType,
-        atsBoardToken: config.atsBoardToken,
-        category: config.category,
-      },
-    });
-  }
+  // Skip companies whose scrapers would error immediately (no selectors/tokens)
+  // to save time. They still get upserted so we can reconcile roles.
+  const configs = allConfigs.filter((c) => {
+    if (c.atsType === "html" && !c.selectors) return false;
+    if (c.atsType === "greenhouse" && !c.atsBoardToken) return false;
+    if (c.atsType === "ashby" && !c.atsBoardToken) return false;
+    if (c.atsType === "lever" && !c.atsBoardToken) return false;
+    if (c.atsType === "smartrecruiters" && !c.atsBoardToken) return false;
+    if (c.atsType === "icims" && !c.icimsPortal) return false;
+    return true;
+  });
+
+  // Ensure all companies exist in DB — run in parallel batches to speed up
+  await runBatch(
+    allConfigs,
+    (config) =>
+      prisma.company.upsert({
+        where: { name: config.name },
+        create: {
+          name: config.name,
+          website: config.website,
+          careersUrl: config.careersUrl,
+          atsType: config.atsType,
+          atsBoardToken: config.atsBoardToken,
+          category: config.category,
+          glassdoorRating: config.glassdoorRating,
+          glassdoorUrl: config.glassdoorUrl,
+        },
+        update: {
+          careersUrl: config.careersUrl,
+          atsType: config.atsType,
+          atsBoardToken: config.atsBoardToken,
+          category: config.category,
+        },
+      }),
+    CONCURRENCY
+  );
 
   // Scrape company APIs and JSearch in parallel to stay within 60s
   const [companyResults, jsearchResults] = await Promise.all([
