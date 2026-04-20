@@ -355,10 +355,11 @@ export async function runScrapeOrchestrator(
   });
 
   // Send daily email digest with all active roles
+  // NOT wrapper is needed so null userStatus values are included (Prisma quirk)
   const allActiveRoles = await prisma.role.findMany({
     where: {
       status: "active",
-      userStatus: { not: "dismissed" },
+      NOT: { userStatus: "dismissed" },
     },
     include: { company: true },
     orderBy: [{ firstSeen: "desc" }],
