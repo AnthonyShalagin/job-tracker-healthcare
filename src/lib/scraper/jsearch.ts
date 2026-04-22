@@ -55,7 +55,7 @@ async function searchJSearch(
     query,
     page: String(page),
     num_pages: "1",
-    date_posted: "week", // Only jobs posted in the last week
+    date_posted: "month", // Last 30 days to backfill roles posted during the cron outage
     remote_jobs_only: "false",
     employment_types: "FULLTIME",
   });
@@ -96,13 +96,16 @@ export async function scrapeJSearch(): Promise<ScraperResult[]> {
   const start = Date.now();
 
   // Targeted queries — each one costs 1 API credit
-  // Keep to 5 queries to fit within 60s cron window (runs parallel with company scrapers)
+  // Location-anchored to NYC/NJ/remote to maximize hit rate within commute range.
+  // Plus one nationwide "remote" query to catch work-from-home roles.
   const queries = [
-    '"director of rehabilitation" OR "rehabilitation director" healthcare',
-    '"director of operations" OR "director of clinical operations" healthcare',
-    '"program director" healthcare OR IDD OR "developmental disabilities"',
-    '"VP of operations" OR "vice president" healthcare',
-    '"director of quality" OR "director of care" OR "clinical operations manager" healthcare',
+    '"director of rehabilitation" OR "rehabilitation director" healthcare "New York" OR "New Jersey" OR remote',
+    '"director of operations" OR "director of clinical operations" healthcare "New York" OR "New Jersey" OR "Jersey City"',
+    '"program director" healthcare OR IDD OR "developmental disabilities" "New York" OR "New Jersey"',
+    '"VP of operations" OR "vice president of operations" healthcare "New York" OR "New Jersey" OR remote',
+    '"director of quality" OR "director of care coordination" OR "clinical operations manager" healthcare remote',
+    '"senior director" OR "executive director" healthcare operations "New York" OR "New Jersey"',
+    '"regional director" OR "area director" healthcare "New York" OR "New Jersey"',
   ];
 
   const allJobs: JSearchJob[] = [];
