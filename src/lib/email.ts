@@ -135,7 +135,15 @@ export async function sendDigestEmail(
       subject,
       html,
     });
-    console.log("Email sent:", JSON.stringify(result));
+    // Resend SDK returns { data, error } — it does NOT throw on 4xx/5xx.
+    // Must explicitly check result.error and surface it.
+    if (result.error) {
+      console.error("Resend rejected send:", JSON.stringify(result.error));
+      throw new Error(
+        `Resend error (${result.error.name || "unknown"}): ${result.error.message || JSON.stringify(result.error)}`
+      );
+    }
+    console.log("Email sent:", JSON.stringify(result.data));
   } catch (err) {
     console.error("Email send failed:", err);
     throw err;
