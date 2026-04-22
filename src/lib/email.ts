@@ -90,8 +90,8 @@ export async function sendDigestEmail(
     : `${allActiveRoles.length} active role${allActiveRoles.length === 1 ? "" : "s"} matching your profile. No new roles today.`;
 
   const subject = newRoleCount > 0
-    ? `${newRoleCount} new + ${allActiveRoles.length} active — Healthcare Job Tracker`
-    : `Daily update: ${allActiveRoles.length} active roles — Healthcare Job Tracker`;
+    ? `${newRoleCount} new + ${allActiveRoles.length} active — Koala Job Tracker`
+    : `Daily update: ${allActiveRoles.length} active roles — Koala Job Tracker`;
 
   const tableRows = newRoleRows + existingRoleRows;
 
@@ -99,7 +99,7 @@ export async function sendDigestEmail(
     <div style="max-width: 700px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
       <div style="background: #f5f5f4; padding: 24px; border-radius: 8px 8px 0 0;">
         <h1 style="margin: 0 0 4px 0; font-size: 20px; color: #1c1917;">
-          Healthcare Job Tracker
+          Koala Job Tracker
         </h1>
         <p style="margin: 0; font-size: 14px; color: #78716c;">${today}</p>
       </div>
@@ -130,7 +130,7 @@ export async function sendDigestEmail(
 
   try {
     const result = await resend.emails.send({
-      from: "Job Tracker <onboarding@resend.dev>",
+      from: "Koala Job Tracker <onboarding@resend.dev>",
       to: recipients,
       subject,
       html,
